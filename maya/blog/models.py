@@ -30,6 +30,13 @@ class BlogPage(Page):
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True)
 
+    def main_image(self):
+        image = self.gallery_images.first()
+
+        if image:
+            return image.image
+        return None
+
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
         index.SearchField('body')
