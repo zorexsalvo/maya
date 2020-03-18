@@ -11,6 +11,7 @@ from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from wagtail.search import index
+from wagtail.snippets import register_snippet
 
 
 class BlogIndexPage(Page):
@@ -82,3 +83,20 @@ class BlogTagIndexPage(Page):
         context['blogpages'] = blogpages
 
         return context
+
+
+@register_snippet
+class BlogPageCategory(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, related_name='+')
+
+    panels = [
+        FieldPanel('name'),
+        ImageChooserPanel('icon')
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'blog categories'
