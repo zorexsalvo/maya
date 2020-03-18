@@ -5,8 +5,8 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    <div class="mt-20">
-        <h1 class="font-bold text-4xl">{{ page.body|richtext }}</h1>
+    <div class="mt-20 shadow-lg">
+        <h1 class="bg-gray-500 text-white font-bold py-2 px-4 border-b-4 border-gray-700 rounded text-4xl">{{ page.body|richtext }}</h1>
     </div>
     <div>
 {% endblock %}
