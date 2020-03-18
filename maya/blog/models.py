@@ -1,6 +1,7 @@
 from django.db import models
+from django import forms
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.tags import ClusterTaggableManager
 
 from taggit.models import TaggedItemBase
@@ -11,7 +12,7 @@ from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from wagtail.search import index
-from wagtail.snippets import register_snippet
+from wagtail.snippets.models import register_snippet
 
 
 class BlogIndexPage(Page):
@@ -38,6 +39,7 @@ class BlogPage(Page):
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    categories = ParentalManyToManyField('blog.BlogPageCategory', blank=True)
 
     def main_image(self):
         image = self.gallery_images.first()
@@ -55,6 +57,7 @@ class BlogPage(Page):
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('tags'),
+            FieldPanel('categories', widget=forms.CheckboxSelectMultiple)
         ], heading='Blog Information'),
         FieldPanel('intro'),
         FieldPanel('body', classname='full'),
@@ -88,7 +91,7 @@ class BlogTagIndexPage(Page):
 @register_snippet
 class BlogPageCategory(models.Model):
     name = models.CharField(max_length=255)
-    icon = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, related_name='+')
+    icon = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, related_name='+')
 
     panels = [
         FieldPanel('name'),
