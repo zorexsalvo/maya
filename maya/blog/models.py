@@ -29,7 +29,7 @@ class BlogIndexPage(Page):
 
 
 class BlogPageTag(TaggedItemBase):
-    content = ParentalKey('BlogPage', on_delete=models.CASCADE, related_name='tagged_items')
+    content_object = ParentalKey('BlogPage', on_delete=models.CASCADE, related_name='tagged_items')
 
 
 class BlogPage(Page):
@@ -54,7 +54,7 @@ class BlogPage(Page):
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('tags'),
-        ]),
+        ], heading='Blog Information'),
         FieldPanel('intro'),
         FieldPanel('body', classname='full'),
         InlinePanel('gallery_images', label="Gallery Images")
@@ -70,3 +70,15 @@ class BlogPageGalleryImage(Orderable):
         ImageChooserPanel('image'),
         FieldPanel('caption')
     ]
+
+
+class BlogTagIndexPage(Page):
+
+    def get_context(self, request):
+        tag = request.GET.get('tag')
+        blogpages = BlogPage.objects.filter(tags__name=tag)
+
+        context = super().get_context(request)
+        context['blogpages'] = blogpages
+
+        return context

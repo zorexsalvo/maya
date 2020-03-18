@@ -7,6 +7,15 @@
     <h2>{{ page.title }}</h2>
     <p class="meta">{{ page.date }}</p>
 
+    {% if page.tags.all.count %}
+        <div class="tags">
+            {% for tag in page.tags.all %}
+                <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}</a>
+            {% endfor %}
+        </div>
+        <br/>
+    {% endif %}
+
     <div class="intro">{{ page.intro }}</div>
     
     {{ page.body|richtext }}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load wagtailcore_tags %}
+
+{% block bodyclass %}template-blogtagindexpage{% endblock bodyclass %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    {% if request.GET.tag|length %}
+        <h4>Showing pages tagged: "{{ request.GET.tag }}"</h4>
+    {% endif %}
+
+    {% for post in blogpages %}
+        <strong><a href="{% pageurl post %}">{{ post.title }}</a></strong>
+        <small>Revised: {{ post.latest_revision_created_at }}</small>
+        {% if post.author %}
+            <p>By {{ post.author }}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}
