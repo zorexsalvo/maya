@@ -6,7 +6,7 @@ authors = ["Zorex Salvo <zorexsalvo@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-wagtail = "^2.8"
+wagtail = "^4.1"
 
 [tool.poetry.dev-dependencies]
 
